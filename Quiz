@@ -1,0 +1,278 @@
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+
+public class Quiz extends JFrame implements ActionListener {
+
+    JPanel mainPanel = new JPanel();
+
+    static ArrayList<Sample> samples = new ArrayList<>();
+
+    static JButton[] options = new JButton[50];
+    static JPanel questionPanel = new JPanel();
+    static JLabel questionLabel = new JLabel("Question Label?");
+
+    static JButton choice1 = new JButton("Choice 1");
+    static JButton choice2 = new JButton("Choice 2");
+    static JButton choice3 = new JButton("Choice 3");
+    static JButton choice4 = new JButton("Choice 4");
+
+
+    public Quiz(){
+
+        populate();
+        setLayout(null);
+
+        mainPanel.setBounds(5, 20, 400, 50);
+
+        questionPanel.setLayout(null);
+
+        JScrollPane scrollPane = new JScrollPane(mainPanel);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        scrollPane.setBounds(2, 30, 400, 60);
+
+
+        int x =5;
+        for (int i = 0; i < options.length;i++){
+            options[i] = new JButton("Question "+String.valueOf(i+1));
+            options[i].setBounds(x, 10, 80, 30);
+            x += 110;
+            options[i].addActionListener(this);
+            mainPanel.add(options[i]);
+        }
+
+
+        add(scrollPane);
+        setSize(400,400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+
+        questionPanel.setBounds(20, 100, 320,250);
+        questionLabel.setBounds(50, 0, 250, 40);
+
+        choice1.setBounds(50, 80, 200, 30);
+        choice2.setBounds(50, 110, 200, 30);
+        choice3.setBounds(50, 140, 200, 30);
+        choice4.setBounds(50, 170, 200, 30);
+
+        questionPanel.add(questionLabel);
+        questionPanel.add(choice1);
+        questionPanel.add(choice2);
+        questionPanel.add(choice3);
+        questionPanel.add(choice4);
+
+        questionPanel.setBackground(Color.decode("#4E4F50"));
+
+        questionLabel.setForeground(Color.WHITE);
+
+        add(questionPanel);
+        setTitle("States Quiz");
+        add(scrollPane);
+        setSize(400,400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+    }
+    private static void setOptions(){
+
+
+    }
+
+    private void populate(){
+
+        samples.add(new Sample("What is the Capitol of Alabama?", "Boise", "Tallahassee", "Montgomery", "Hartford", "Montgomery"));
+        samples.add(new Sample("What is the Capitol of Alaska?", "Bismarck", "Columbus", "Juneau", "Nashville", "Juneau"));
+        samples.add(new Sample("What is the Capitol of Arizona?", "Salt Lake City", "Phoenix", "Montgomery", "Hartford", "Phoenix"));
+        samples.add(new Sample("What is the Capitol of Arkansas?", "Little Rock", "Cheyenne", "Carson City", "Hartford", "Little Rock"));
+        samples.add(new Sample("What is the Capitol of California?", "Jefferson City", "Annapolis", "Denver", "Sacramento", "Sacramento"));
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        String questionChosen = e.getActionCommand();
+        getQuestion(questionChosen);
+
+    }
+    public static void getQuestion(String q){
+
+        switch (q){
+            case "Question 1":
+                questionLabel.setText(samples.get(0).getQuestion());
+
+                clearOptionns();
+
+                choice1.setText(samples.get(0).getOp1());
+                choice2.setText(samples.get(0).getOp2());
+                choice3.setText(samples.get(0).getOp3());
+                choice4.setText(samples.get(0).getOp4());
+
+
+
+                break;
+            case "Question 2":
+                questionLabel.setText(samples.get(1).getQuestion());
+                clearOptionns();
+
+                choice1.setText(samples.get(1).getOp1());
+                choice2.setText(samples.get(1).getOp2());
+                choice3.setText(samples.get(1).getOp3());
+                choice4.setText(samples.get(1).getOp4());
+
+
+                break;
+            case "Question 3":
+
+                questionLabel.setText(samples.get(2).getQuestion());
+                clearOptionns();
+
+                choice1.setText(samples.get(2).getOp1());
+                choice2.setText(samples.get(2).getOp2());
+                choice3.setText(samples.get(2).getOp3());
+                choice4.setText(samples.get(2).getOp4());
+
+
+                break;
+            case "Question 4":
+
+                questionLabel.setText(samples.get(3).getQuestion());
+                clearOptionns();
+
+                choice1.setText(samples.get(3).getOp1());
+                choice2.setText(samples.get(3).getOp2());
+                choice3.setText(samples.get(3).getOp3());
+                choice4.setText(samples.get(3).getOp4());
+
+
+                break;
+            case "Question 5":
+                questionLabel.setText(samples.get(4).getQuestion());
+                clearOptionns();
+
+                choice1.setText(samples.get(4).getOp1());
+                choice2.setText(samples.get(4).getOp2());
+                choice3.setText(samples.get(4).getOp3());
+                choice4.setText(samples.get(4).getOp4());
+
+                break;
+        }
+
+    }
+
+    public static void clearOptionns(){
+        choice1.setText("");
+        choice2.setText("");
+        choice3.setText("");
+        choice4.setText("");
+    }
+    public static void main(String[] args) {
+
+
+        startUpMenu();
+    }
+    public static void startUpMenu(){
+
+        JFrame welcome = new JFrame();
+        welcome.setTitle("Quiz Game");
+        welcome.setLayout(null);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+
+        panel.setBorder(BorderFactory.createLoweredBevelBorder());
+        panel.setBounds(30,30, 300,300);
+
+        JLabel gameTitle = new JLabel("Welcome to States Game.");
+        gameTitle.setBounds(60, 30, 300, 40);
+
+        JButton play = new JButton("Play");
+        JButton about = new JButton("How The Game Works");
+        JButton exit = new JButton("Exit");
+
+        play.setBounds(80, 80, 120, 30);
+        about.setBounds(40, 110, 200, 30);
+        exit.setBounds(40, 140, 200, 30);
+
+        panel.add(play);
+        panel.add(exit);
+
+        play.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                startTheGame(welcome);
+            }
+        });
+
+        about.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                getInfo();
+
+            }
+        });
+
+        exit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                welcome.dispatchEvent(new WindowEvent(welcome, WindowEvent.WINDOW_CLOSING));
+            }
+        });
+
+
+        panel.add(about);
+        panel.add(gameTitle);
+        welcome.add(panel);
+        welcome.setSize(400,400);
+        welcome.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        welcome.setVisible(true);
+    }
+    public static void startTheGame(JFrame frame){
+
+        frame.dispose();
+
+        new Quiz();
+
+    }
+    public static void getInfo(){
+
+
+        JFrame frame = new JFrame();
+
+        frame.setTitle("About the Game");
+
+
+        String info =  "The Game is simple.When you \nChoose a question a question\n" +
+                "multiple choices will come up. Each question asks you a state's capitol city\n" +
+                "if you choose the correct answer, you will get 10 points.";
+
+        JTextArea textArea = new JTextArea(info);
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+
+        textArea.setLineWrap(true);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+
+
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        scrollPane.setBounds(2, 2, 280, 200);
+
+        textArea.setBorder(BorderFactory.createCompoundBorder(
+                textArea.getBorder(),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+
+        panel.add(scrollPane);
+        frame.add(panel);
+        frame.setSize(300,300);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setVisible(true);
+    }
+}
