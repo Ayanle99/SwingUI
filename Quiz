@@ -1,278 +1,641 @@
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 public class Quiz extends JFrame implements ActionListener {
 
-    JPanel mainPanel = new JPanel();
+    static JPanel mainPanel = new JPanel();
+    static JPanel statesContainer = new JPanel();
 
-    static ArrayList<Sample> samples = new ArrayList<>();
+    static JButton[] statesLabels = new JButton[50];
 
-    static JButton[] options = new JButton[50];
-    static JPanel questionPanel = new JPanel();
-    static JLabel questionLabel = new JLabel("Question Label?");
+    static JLabel qLabel = new JLabel("What is the Capitol of Minnesota?");
 
     static JButton choice1 = new JButton("Choice 1");
     static JButton choice2 = new JButton("Choice 2");
     static JButton choice3 = new JButton("Choice 3");
     static JButton choice4 = new JButton("Choice 4");
 
+    static ArrayList<State> allStates = new ArrayList<>();
+    static JLabel counterLabel = new JLabel("State # 0/50");
+
+
 
     public Quiz(){
 
-        populate();
-        setLayout(null);
+        allStates.add(new State("What is the Capitol of Alabama?",
+                "Honolulu",
+                "Tallahassee",
+                "Denver",
+                "Montgomery",
+                 "Montgomery"));
 
-        mainPanel.setBounds(5, 20, 400, 50);
+        allStates.add(new State("What is the Capitol of Alaska?",
+                "Lansing",
+                "Juneau",
+                "Helena",
+                "Atlanta",
+                "Juneau"));
 
-        questionPanel.setLayout(null);
+        allStates.add(new State("What is the Capitol of Arizona?",
+                "Lincoln",
+                "Albany",
+                "Phoenix",
+                "Bismarck",
+                "Phoenix"));
 
-        JScrollPane scrollPane = new JScrollPane(mainPanel);
+        allStates.add(new State("What is the Capitol of Arkansas?",
+                "Little Rock",
+                "Columbia",
+                "Pierre",
+                "Cheyenne",
+                "Little Rock"));
+
+        allStates.add(new State("What is the Capitol of California?",
+                "Salt Lake City",
+                "Des Moines",
+                "Olympia",
+                "Sacramento",
+                "Sacramento"));
+
+
+        mainPanel.setLayout(null);
+
+
+        JScrollPane scrollPane = new JScrollPane(statesContainer);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-        scrollPane.setBounds(2, 30, 400, 60);
+
+        ArrayList<String> stateNames = allStates.get(0).getStateName();
 
 
-        int x =5;
-        for (int i = 0; i < options.length;i++){
-            options[i] = new JButton("Question "+String.valueOf(i+1));
-            options[i].setBounds(x, 10, 80, 30);
-            x += 110;
-            options[i].addActionListener(this);
-            mainPanel.add(options[i]);
+        for(int i = 0; i < statesLabels.length;i++){
+            statesLabels[i] = new JButton(stateNames.get(i));
+            statesContainer.add(statesLabels[i]);
+            statesLabels[i].addActionListener(this);
+            statesLabels[i].setOpaque(true);
+            statesLabels[i].setBorderPainted(false);
+            statesLabels[i].setForeground(Color.WHITE);
+            statesLabels[i].setBackground(Color.decode("#FF6347"));
+
+
         }
 
 
+        scrollPane.setBounds(10, 20, 350, 60);
+
+        qLabel.setBounds(50, 90, 300, 40);
+
+        qLabel.setForeground(Color.WHITE);
+
+        choice1.setBounds(60, 140, 250, 40);
+
+        choice1.setOpaque(true);
+        choice1.setBorderPainted(false);
+        choice1.setForeground(Color.WHITE);
+        choice1.setBackground(Color.decode("#4F9CED"));
+
+        choice2.setOpaque(true);
+        choice2.setBorderPainted(false);
+        choice2.setForeground(Color.WHITE);
+        choice2.setBackground(Color.decode("#4F9CED"));
+
+
+        choice3.setOpaque(true);
+        choice3.setBorderPainted(false);
+        choice3.setForeground(Color.WHITE);
+        choice3.setBackground(Color.decode("#4F9CED"));
+
+        choice4.setOpaque(true);
+        choice4.setBorderPainted(false);
+        choice4.setForeground(Color.WHITE);
+        choice4.setBackground(Color.decode("#4F9CED"));
+
+
+
+        choice2.setBounds(60, 180, 250, 40);
+        choice3.setBounds(60, 220, 250, 40);
+        choice4.setBounds(60, 260, 250, 40);
+
+
+        counterLabel.setBounds(20, 305, 250, 40);
+
+
+        mainPanel.add(counterLabel);
+        mainPanel.add(choice1);
+        mainPanel.add(choice2);
+        mainPanel.add(choice3);
+        mainPanel.add(choice4);
+
+
+        counterLabel.setForeground(Color.WHITE);
+        counterLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        qLabel.setFont(new Font("Arial", Font.BOLD, 17));
+
+        mainPanel.setBackground(Color.decode("#635A59"));
+        statesContainer.setBackground(Color.decode("#B22222"));
+        setTitle("Quiz Game");
+
+        mainPanel.add(qLabel);
+        mainPanel.add(scrollPane);
         add(scrollPane);
-        setSize(400,400);
+        add(mainPanel);
+        setSize(400, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
-
-        questionPanel.setBounds(20, 100, 320,250);
-        questionLabel.setBounds(50, 0, 250, 40);
-
-        choice1.setBounds(50, 80, 200, 30);
-        choice2.setBounds(50, 110, 200, 30);
-        choice3.setBounds(50, 140, 200, 30);
-        choice4.setBounds(50, 170, 200, 30);
-
-        questionPanel.add(questionLabel);
-        questionPanel.add(choice1);
-        questionPanel.add(choice2);
-        questionPanel.add(choice3);
-        questionPanel.add(choice4);
-
-        questionPanel.setBackground(Color.decode("#4E4F50"));
-
-        questionLabel.setForeground(Color.WHITE);
-
-        add(questionPanel);
-        setTitle("States Quiz");
-        add(scrollPane);
-        setSize(400,400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
-    }
-    private static void setOptions(){
-
-
     }
 
-    private void populate(){
-
-        samples.add(new Sample("What is the Capitol of Alabama?", "Boise", "Tallahassee", "Montgomery", "Hartford", "Montgomery"));
-        samples.add(new Sample("What is the Capitol of Alaska?", "Bismarck", "Columbus", "Juneau", "Nashville", "Juneau"));
-        samples.add(new Sample("What is the Capitol of Arizona?", "Salt Lake City", "Phoenix", "Montgomery", "Hartford", "Phoenix"));
-        samples.add(new Sample("What is the Capitol of Arkansas?", "Little Rock", "Cheyenne", "Carson City", "Hartford", "Little Rock"));
-        samples.add(new Sample("What is the Capitol of California?", "Jefferson City", "Annapolis", "Denver", "Sacramento", "Sacramento"));
-
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-        String questionChosen = e.getActionCommand();
-        getQuestion(questionChosen);
-
-    }
-    public static void getQuestion(String q){
-
-        switch (q){
-            case "Question 1":
-                questionLabel.setText(samples.get(0).getQuestion());
-
-                clearOptionns();
-
-                choice1.setText(samples.get(0).getOp1());
-                choice2.setText(samples.get(0).getOp2());
-                choice3.setText(samples.get(0).getOp3());
-                choice4.setText(samples.get(0).getOp4());
-
-
-
-                break;
-            case "Question 2":
-                questionLabel.setText(samples.get(1).getQuestion());
-                clearOptionns();
-
-                choice1.setText(samples.get(1).getOp1());
-                choice2.setText(samples.get(1).getOp2());
-                choice3.setText(samples.get(1).getOp3());
-                choice4.setText(samples.get(1).getOp4());
-
-
-                break;
-            case "Question 3":
-
-                questionLabel.setText(samples.get(2).getQuestion());
-                clearOptionns();
-
-                choice1.setText(samples.get(2).getOp1());
-                choice2.setText(samples.get(2).getOp2());
-                choice3.setText(samples.get(2).getOp3());
-                choice4.setText(samples.get(2).getOp4());
-
-
-                break;
-            case "Question 4":
-
-                questionLabel.setText(samples.get(3).getQuestion());
-                clearOptionns();
-
-                choice1.setText(samples.get(3).getOp1());
-                choice2.setText(samples.get(3).getOp2());
-                choice3.setText(samples.get(3).getOp3());
-                choice4.setText(samples.get(3).getOp4());
-
-
-                break;
-            case "Question 5":
-                questionLabel.setText(samples.get(4).getQuestion());
-                clearOptionns();
-
-                choice1.setText(samples.get(4).getOp1());
-                choice2.setText(samples.get(4).getOp2());
-                choice3.setText(samples.get(4).getOp3());
-                choice4.setText(samples.get(4).getOp4());
-
-                break;
-        }
-
-    }
-
-    public static void clearOptionns(){
-        choice1.setText("");
-        choice2.setText("");
-        choice3.setText("");
-        choice4.setText("");
-    }
     public static void main(String[] args) {
 
-
-        startUpMenu();
-    }
-    public static void startUpMenu(){
-
-        JFrame welcome = new JFrame();
-        welcome.setTitle("Quiz Game");
-        welcome.setLayout(null);
+        JFrame frame = new JFrame();
 
         JPanel panel = new JPanel();
         panel.setLayout(null);
 
-        panel.setBorder(BorderFactory.createLoweredBevelBorder());
-        panel.setBounds(30,30, 300,300);
+        frame.setTitle("U.S Capitols Quiz");
 
-        JLabel gameTitle = new JLabel("Welcome to States Game.");
-        gameTitle.setBounds(60, 30, 300, 40);
+        ImageIcon image = new ImageIcon("../flag2.jpeg");
+        JLabel imageHolder = new JLabel(image);
+
+
+        imageHolder.setBounds(50, 20, 300, 300);
+
+        panel.add(imageHolder);
+        panel.setBorder(BorderFactory.createLoweredBevelBorder());
 
         JButton play = new JButton("Play");
-        JButton about = new JButton("How The Game Works");
+        JButton study = new JButton("Study");
         JButton exit = new JButton("Exit");
 
-        play.setBounds(80, 80, 120, 30);
-        about.setBounds(40, 110, 200, 30);
-        exit.setBounds(40, 140, 200, 30);
+        play.setFont(new Font("Arial", Font.BOLD, 25));
+        study.setFont(new Font("Arial", Font.PLAIN, 18));
+        exit.setFont(new Font("Arial", Font.BOLD, 25));
 
-        panel.add(play);
-        panel.add(exit);
+        panel.setBackground(Color.decode("#87ceff"));
+
+        play.setOpaque(true);
+        play.setBorderPainted(false);
+        play.setBackground(Color.decode("#6633cc"));
+        play.setForeground(Color.WHITE);
+
+        study.setOpaque(true);
+        study.setBorderPainted(false);
+        study.setBackground(Color.decode("#09F734"));
+        study.setForeground(Color.WHITE);
+
+
+        exit.setOpaque(true);
+        exit.setBorderPainted(false);
+        exit.setBackground(Color.decode("#FF3300"));
+        exit.setForeground(Color.WHITE);
+
+        play.setBounds(120, 350,130, 30);
+        study.setBounds(120, 390,130, 30);
+        exit.setBounds(120, 430,130, 30);
+
+
 
         play.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                startTheGame(welcome);
+
+                frame.dispose();
+                new Quiz();
             }
         });
 
-        about.addActionListener(new ActionListener() {
+
+
+        study.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                getInfo();
-
+                // create study program
             }
         });
+
 
         exit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                welcome.dispatchEvent(new WindowEvent(welcome, WindowEvent.WINDOW_CLOSING));
+                System.exit(0);
             }
         });
 
 
-        panel.add(about);
-        panel.add(gameTitle);
-        welcome.add(panel);
-        welcome.setSize(400,400);
-        welcome.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        welcome.setVisible(true);
-    }
-    public static void startTheGame(JFrame frame){
+        panel.add(study);
+        panel.add(exit);
 
-        frame.dispose();
-
-        new Quiz();
-
-    }
-    public static void getInfo(){
-
-
-        JFrame frame = new JFrame();
-
-        frame.setTitle("About the Game");
-
-
-        String info =  "The Game is simple.When you \nChoose a question a question\n" +
-                "multiple choices will come up. Each question asks you a state's capitol city\n" +
-                "if you choose the correct answer, you will get 10 points.";
-
-        JTextArea textArea = new JTextArea(info);
-        JPanel panel = new JPanel();
-        panel.setLayout(null);
-
-        textArea.setLineWrap(true);
-        JScrollPane scrollPane = new JScrollPane(textArea);
-
-
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-        scrollPane.setBounds(2, 2, 280, 200);
-
-        textArea.setBorder(BorderFactory.createCompoundBorder(
-                textArea.getBorder(),
-                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-
-        panel.add(scrollPane);
+        panel.add(play);
         frame.add(panel);
-        frame.setSize(300,300);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(400,500);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+
+
+
+    }
+
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+
+
+        String state = e.getActionCommand();
+
+        switch (state){
+
+
+            case "Alabama":
+
+                qLabel.setText(allStates.get(0).getQuestion());
+
+                choice1.setText(allStates.get(0).getOp1());
+                choice2.setText(allStates.get(0).getOp2());
+                choice3.setText(allStates.get(0).getOp3());
+                choice4.setText(allStates.get(0).getOp4());
+
+
+                counterLabel.setText("State # 1/50");
+                checkAnswers(1, choice1, choice2, choice3, choice4);
+
+
+                break;
+
+            case "Alaska":
+
+                counterLabel.setText("State # 2/50");
+                qLabel.setText(allStates.get(1).getQuestion());
+
+                choice1.setText(allStates.get(1).getOp1());
+                choice2.setText(allStates.get(1).getOp2());
+                choice3.setText(allStates.get(1).getOp3());
+                choice4.setText(allStates.get(1).getOp4());
+
+
+                checkAnswers(2, choice1, choice2, choice3, choice4);
+
+                break;
+
+            case "Arizona":
+
+
+                counterLabel.setText("State # 3/50");
+
+                qLabel.setText(allStates.get(2).getQuestion());
+
+                choice1.setText(allStates.get(2).getOp1());
+                choice2.setText(allStates.get(2).getOp2());
+                choice3.setText(allStates.get(2).getOp3());
+                choice4.setText(allStates.get(2).getOp4());
+
+                checkAnswers(3, choice1, choice2, choice3, choice4);
+
+                break;
+
+            case "Arkansas":
+
+
+                counterLabel.setText("State # 4/50");
+                qLabel.setText(allStates.get(3).getQuestion());
+
+                choice1.setText(allStates.get(3).getOp1());
+                choice2.setText(allStates.get(3).getOp2());
+                choice3.setText(allStates.get(3).getOp3());
+                choice4.setText(allStates.get(3).getOp4());
+                checkAnswers(4, choice1, choice2, choice3, choice4);
+
+
+                break;
+
+            case "California":
+
+                counterLabel.setText("State # 5/50");
+
+                qLabel.setText(allStates.get(4).getQuestion());
+
+                choice1.setText(allStates.get(4).getOp1());
+                choice2.setText(allStates.get(4).getOp2());
+                choice3.setText(allStates.get(4).getOp3());
+                choice4.setText(allStates.get(4).getOp4());
+
+                checkAnswers(5, choice1, choice2, choice3, choice4);
+
+                break;
+
+
+        }
+
+
+    }
+    public static void checkAnswers(int num, JButton ch1, JButton ch2, JButton ch3, JButton ch4){
+
+
+        switch (num){
+
+            case 1:
+
+                ch1.setForeground(Color.WHITE);
+                ch2.setForeground(Color.WHITE);
+                ch3.setForeground(Color.WHITE);
+                ch4.setForeground(Color.WHITE);
+
+
+                ch1.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        if (ch1.getText().equals(allStates.get(0).getAnswer())){
+
+                            ch1.setForeground(Color.GREEN);
+                        }
+                    }
+                });
+
+                ch2.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        if (ch2.getText().equals(allStates.get(0).getAnswer())){
+
+                            ch2.setForeground(Color.GREEN);
+                        }
+
+                    }
+                });
+
+
+                ch3.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        if (ch3.getText().equals(allStates.get(0).getAnswer())){
+
+                            ch3.setForeground(Color.GREEN);
+                        }
+
+                    }
+                });
+
+
+                ch4.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+
+                        if (ch4.getText().equals(allStates.get(0).getAnswer())){
+
+                            ch4.setForeground(Color.GREEN);
+                        }
+                    }
+                });
+
+                break;
+
+            case 2:
+
+                ch1.setForeground(Color.WHITE);
+                ch2.setForeground(Color.WHITE);
+                ch3.setForeground(Color.WHITE);
+                ch4.setForeground(Color.WHITE);
+
+
+                ch1.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        if (ch1.getText().equals(allStates.get(1).getAnswer())){
+
+                            ch1.setForeground(Color.GREEN);
+                        }
+                    }
+                });
+
+                ch2.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        if (ch2.getText().equals(allStates.get(1).getAnswer())){
+
+                            ch2.setForeground(Color.GREEN);
+                        }
+
+                    }
+                });
+
+
+                ch3.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        if (ch3.getText().equals(allStates.get(1).getAnswer())){
+
+                            ch3.setForeground(Color.GREEN);
+                        }
+
+                    }
+                });
+
+
+                ch4.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+
+                        if (ch4.getText().equals(allStates.get(1).getAnswer())){
+
+                            ch4.setForeground(Color.GREEN);
+                        }
+                    }
+                });
+
+                break;
+
+            case 3:
+
+                ch1.setForeground(Color.WHITE);
+                ch2.setForeground(Color.WHITE);
+                ch3.setForeground(Color.WHITE);
+                ch4.setForeground(Color.WHITE);
+
+
+                ch1.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        if (ch1.getText().equals(allStates.get(2).getAnswer())){
+
+                            ch1.setForeground(Color.GREEN);
+                        }
+                    }
+                });
+
+                ch2.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        if (ch2.getText().equals(allStates.get(2).getAnswer())){
+
+                            ch2.setForeground(Color.GREEN);
+                        }
+
+                    }
+                });
+
+
+                ch3.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        if (ch3.getText().equals(allStates.get(2).getAnswer())){
+
+                            ch3.setForeground(Color.GREEN);
+                        }
+
+                    }
+                });
+
+
+                ch4.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+
+                        if (ch4.getText().equals(allStates.get(2).getAnswer())){
+
+                            ch4.setForeground(Color.GREEN);
+                        }
+                    }
+                });
+
+
+
+                break;
+
+            case 4:
+
+                ch1.setForeground(Color.WHITE);
+                ch2.setForeground(Color.WHITE);
+                ch3.setForeground(Color.WHITE);
+                ch4.setForeground(Color.WHITE);
+
+                ch1.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        if (ch1.getText().equals(allStates.get(3).getAnswer())){
+
+                            ch1.setForeground(Color.GREEN);
+                        }
+                    }
+                });
+
+                ch2.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        if (ch2.getText().equals(allStates.get(3).getAnswer())){
+
+                            ch2.setForeground(Color.GREEN);
+                        }
+
+                    }
+                });
+
+
+                ch3.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        if (ch3.getText().equals(allStates.get(3).getAnswer())){
+
+                            ch3.setForeground(Color.GREEN);
+                        }
+
+                    }
+                });
+
+
+                ch4.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+
+                        if (ch4.getText().equals(allStates.get(3).getAnswer())){
+
+                            ch4.setForeground(Color.GREEN);
+                        }
+                    }
+                });
+
+                break;
+
+            case 5:
+
+                ch1.setForeground(Color.WHITE);
+                ch2.setForeground(Color.WHITE);
+                ch3.setForeground(Color.WHITE);
+                ch4.setForeground(Color.WHITE);
+
+
+                ch1.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        if (ch1.getText().equals(allStates.get(4).getAnswer())){
+
+                            ch1.setForeground(Color.GREEN);
+                        }
+                    }
+                });
+
+                ch2.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        if (ch2.getText().equals(allStates.get(4).getAnswer())){
+
+                            ch2.setForeground(Color.GREEN);
+                        }
+
+                    }
+                });
+
+
+                ch3.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        if (ch3.getText().equals(allStates.get(4).getAnswer())){
+
+                            ch3.setForeground(Color.GREEN);
+                        }
+
+                    }
+                });
+
+
+                ch4.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+
+                        if (ch4.getText().equals(allStates.get(4).getAnswer())){
+
+                            ch4.setForeground(Color.GREEN);
+                        }
+                    }
+                });
+
+
+                break;
+
+        }
+
+
     }
 }
